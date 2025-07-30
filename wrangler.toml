@@ -1,0 +1,10 @@
+name = "cancion-worker"
+main = "src/index.js"
+compatibility_date = "2024-07-25"
+
+# Configuración para el servidor de desarrollo local ('wrangler dev')
+[dev]
+# Escucha en la IP 0.0.0.0 para ser accesible desde fuera del contenedor (desde tu localhost).
+ip = "0.0.0.0"
+# El puerto en el que correrá el servidor de desarrollo.
+port = 8787

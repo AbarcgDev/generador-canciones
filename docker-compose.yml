@@ -1,0 +1,14 @@
+services:
+  worker:
+    image: node:22
+    container_name: cancion-worker
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8787:8787"
+    command: sh -c "npm install && npx wrangler dev"
+
+    # Mantiene el contenedor corriendo de forma interactiva.
+    stdin_open: true
+    tty: true

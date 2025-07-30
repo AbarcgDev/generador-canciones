@@ -1,0 +1,13 @@
+{
+    "name": "cancion-worker",
+    "version": "1.0.0",
+    "description": "Entorno de desarrollo para worker de cloudflare",
+    "private": true,
+    "scripts": {
+        "start": "npx wrangler dev",
+        "deploy": "npx wrangler deploy"
+    },
+    "devDependencies": {
+        "wrangler": "^3.0.0"
+    }
+}
