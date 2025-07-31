@@ -1,25 +1,35 @@
-/**
- * src/index.js
- *
- * This is the entry point for your Cloudflare Worker.
- * Responds with a simple "Hello Worker!" to any request.
- */
-
-import { handleBirthdayRequest } from "./handlers/birthdayHandler";
+import { handlePostSongRequest, handleSunoCallback } from "./handlers/songHandler";
 
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
         const { pathname, searchParams } = url;
+        const SUNO_API_KEY = env.SUNO_API_KEY;
+
+        if (!SUNO_API_KEY) {
+            return new Response("Keys not configured", {
+                status: 500
+            });
+        }
 
         if (pathname === "/cancion") {
-            if (request.method !== "GET") {
+            if (request.method !== "POST") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
-                    headers: { "Allow": "GET" }
+                    headers: { "Allow": "POST" }
                 });
             }
-            return handleBirthdayRequest(request);
+            return handlePostSongRequest(request, SUNO_API_KEY);
+        }
+
+        if (pathname === "/suno-callback") {
+            if (request.method !== "POST") {
+                return new Response("Método no permitido", {
+                    status: 405, // Method Not Allowed
+                    headers: { "Allow": "POST" }
+                });
+            }
+            return handleSunoCallback()
         }
         // Default response
         return new Response("Ruta no encontrada. Intenta /cancion?name=TuNombre&birthday=AAAA-MM-DD", { status: 404 });

@@ -1,6 +1,7 @@
 import { isBirthday, calculateAge } from "../services/birthdayService";
+import { generateSong } from "../services/songService";
 
-export async function handleBirthdayRequest(request) {
+export async function handlePostSongRequest(request, SUNO_API_KEY) {
     const url = new URL(request.url);
     const clientName = url.searchParams.get("name");
     const birthdayString = url.searchParams.get("birthday"); // Example: "1998-07-30"
@@ -38,13 +39,29 @@ export async function handleBirthdayRequest(request) {
         });
     }
 
-    const age = calculateAge(birthDate);
+    try {
+        const age = calculateAge(birthDate);
+        const songData = await generateSong(clientName, age, SUNO_API_KEY);
 
-    return new Response(JSON.stringify({
-        isBirthday: true,
-        song: `Feliz Cumpleaños numero ${age} ${clientName}`,
-    }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-    });
+        return new Response(JSON.stringify({
+            msg: "Task para generacion de cancion creado correctamente",
+            taskId: songData["data"]["taskId"],
+        }), {
+            status: 201,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    } catch (error) {
+        return new Response(JSON.stringify({
+            msg: "Error generando cancion",
+            error: error,
+        }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+}
+
+export async function handleSunoCallback(params) {
+    // TODO: Implementar logica para guardar canciones en storage Cloudflare
+    // Actualizar status de taskID en BD e incluir links de archivo en storage.
 }
