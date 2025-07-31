@@ -22,6 +22,7 @@ curl "http://localhost:8787/cancion?name=Alvaro&birthday=1998-07-30"
 # O simplemente en tu navegador
 http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
 ```
+
 #### Ejemplos de Respuesta
 
 **1. Es Cumpleaños (hoy es 30 de julio de 2025)**
@@ -32,6 +33,7 @@ http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
   "song": "Feliz Cumpleaños numero 27 Robert",
   "age": 27
 }
+```
 
 2. No es Cumpleaños
 
