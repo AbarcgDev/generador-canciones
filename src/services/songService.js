@@ -14,7 +14,7 @@ export async function generateSong(name, age, SUNO_API_KEY) {
             customMode: false,
             instrumental: false, // Esto podría ser un problema si esperas voz
             model: "V3_5",
-            callBackUrl: "https://generador-canciones-test.bc-alvaro.workers.dev/"
+            callBackUrl: ""
         })
     };
 
