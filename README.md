@@ -4,13 +4,13 @@
 
 ### `GET /cancion`
 
-Este endpoint verifica si la fecha de nacimiento proporcionada coincide con el día y mes actuales (en UTC).
+Este endpoint responde con una cancion generada por IA (TODO) si recibe la fecha de cumpleaños de la persona.
 
 #### Parámetros de Consulta (`Query Parameters`)
 
 | Parámetro | Tipo | Requerido | Descripción | Ejemplo |
 | :-------- | :--- | :------- | :---------- | :------ |
-| `name` | `string` | Sí | El nombre de la persona cuyo cumpleaños se está verificando. | `Alvaro` |
+| `name` | `string` | Sí | El nombre de la persona cuyo cumpleaños se está verificando. | `Robert` |
 | `birthday` | `string` | Sí | Si solo se envía `YYYY-MM-DD`, la API lo interpretará como medianoche UTC de ese día (`YYYY-MM-DDTH00:00:00.000Z`). | `1998-07-30` |
 
 #### Ejemplo de Solicitud
@@ -21,7 +21,7 @@ curl "http://localhost:8787/cancion?name=Alvaro&birthday=1998-07-30"
 
 # O simplemente en tu navegador
 http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
-
+```
 #### Ejemplos de Respuesta
 
 **1. Es Cumpleaños (hoy es 30 de julio de 2025)**
@@ -29,7 +29,7 @@ http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
 ```json
 {
   "isBirthday": true,
-  "song": "Feliz Cumpleaños numero 27 Alvaro",
+  "song": "Feliz Cumpleaños numero 27 Robert",
   "age": 27
 }
 
