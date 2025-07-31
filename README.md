@@ -31,7 +31,6 @@ http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
 {
   "isBirthday": true,
   "song": "Feliz Cumpleaños numero 27 Robert",
-  "age": 27
 }
 ```
 
