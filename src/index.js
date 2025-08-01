@@ -19,9 +19,9 @@ export default {
                     headers: { "Allow": "POST" }
                 });
             }
-            return handlePostSongRequest(request, SUNO_API_KEY);
+            return handlePostSongRequest(request, env);
         }
-
+        //console.log(pathname)
         if (pathname === "/suno-callback") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
@@ -29,7 +29,7 @@ export default {
                     headers: { "Allow": "POST" }
                 });
             }
-            return handleSunoCallback()
+            return await handleSunoCallback(request, env)
         }
         // Default response
         return new Response("Ruta no encontrada. Intenta /cancion?name=TuNombre&birthday=AAAA-MM-DD", { status: 404 });

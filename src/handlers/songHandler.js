@@ -1,7 +1,7 @@
 import { isBirthday, calculateAge } from "../services/birthdayService";
 import { generateSong } from "../services/songService";
 
-export async function handlePostSongRequest(request, SUNO_API_KEY) {
+export async function handlePostSongRequest(request, env) {
     const url = new URL(request.url);
     const clientName = url.searchParams.get("name");
     const birthdayString = url.searchParams.get("birthday"); // Example: "1998-07-30"
@@ -41,11 +41,12 @@ export async function handlePostSongRequest(request, SUNO_API_KEY) {
 
     try {
         const age = calculateAge(birthDate);
-        const songData = await generateSong(clientName, age, SUNO_API_KEY);
-
+        const songData = await generateSong(clientName, age, env.SUNO_API_KEY);
+        const insertTaskQuery = env.SONGS_DB.prepare("INSERT INTO tasks (id) VALUES (?)");
+        const insertTaskResult = await insertTaskQuery.bind(songData.data.taskId).run();
         return new Response(JSON.stringify({
             msg: "Task para generacion de cancion creado correctamente",
-            taskId: songData["data"]["taskId"],
+            taskId: songData.data.taskId,
         }), {
             status: 201,
             headers: { 'Content-Type': 'application/json' }
@@ -53,7 +54,7 @@ export async function handlePostSongRequest(request, SUNO_API_KEY) {
     } catch (error) {
         return new Response(JSON.stringify({
             msg: "Error generando cancion",
-            error: error,
+            error: error.message,
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
@@ -61,7 +62,25 @@ export async function handlePostSongRequest(request, SUNO_API_KEY) {
     }
 }
 
-export async function handleSunoCallback(params) {
-    // TODO: Implementar logica para guardar canciones en storage Cloudflare
-    // Actualizar status de taskID en BD e incluir links de archivo en storage.
+export async function handleSunoCallback(request, env) {
+    const reqBody = await request.json();
+    const { code, task_id } = reqBody;
+    if (code === 200) {
+        // Marcar tarea como terminada
+        const updateTaskQuery = env.SONGS_DB.prepare("UPDATE tasks SET status = ? WHERE id = ?")
+        const updateTaskResult = await updateTaskQuery.bind("SUCCESS", task_id).run()
+        const songs = reqBody.data;
+        for (const song of songs) {
+            const { id, audio_url, title } = song;
+            const downloadFileResponse = await fetch(audio_url);
+            const songFile = downloadFileResponse.body;
+            // Guarda la cancion usando la id proprocionada por suno como key.
+            await env.SONGS_STORAGE.put(id, songFile)
+            const query = env.SONGS_DB.prepare("INSERT INTO songs (id,title,task_id) VALUES (?, ?, ?)");
+            const result = await query.bind(id, title, task_id).run();
+        }
+    }
+    return new Response("", {
+        status: 200,
+    });
 }

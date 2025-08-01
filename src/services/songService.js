@@ -36,8 +36,7 @@ export async function generateSong(name, age, SUNO_API_KEY) {
 
         return data;
     } catch (error) {
-        // Re-lanza el error para que sea capturado por el bloque catch superior
-        console.error("Error en generateSong:", error); // Imprime el error para depuración
+        console.error("Error en generateSong:", error);
         throw error;
     }
 }

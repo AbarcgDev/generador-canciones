@@ -8,3 +8,13 @@ compatibility_date = "2024-07-25"
 ip = "0.0.0.0"
 # El puerto en el que correrá el servidor de desarrollo.
 port = 8787
+
+[[d1_databases]]
+database_name = "birthday-songs"
+database_id = "b678583e-4624-4767-99dd-a8ebc149f26c"
+binding = "SONGS_DB"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+bucket_name = "birthday-songs"
+binding = "SONGS_STORAGE"
