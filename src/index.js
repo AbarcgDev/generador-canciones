@@ -1,4 +1,5 @@
 import { handlePostSongRequest, handleSunoCallback } from "./handlers/songHandler";
+import { handleGetTaskStatusRequest } from "./handlers/taskHandler";
 
 export default {
     async fetch(request, env, ctx) {
@@ -21,7 +22,7 @@ export default {
             }
             return handlePostSongRequest(request, env);
         }
-        //console.log(pathname)
+
         if (pathname === "/suno-callback") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
@@ -30,6 +31,16 @@ export default {
                 });
             }
             return await handleSunoCallback(request, env)
+        }
+
+        if (pathname === "/task-status") {
+            if (request.method !== "GET") {
+                return new Response("Método no permitido", {
+                    status: 405, // Method Not Allowed
+                    headers: { "Allow": "GET" }
+                });
+            }
+            return await handleGetTaskStatusRequest(request, env)
         }
         // Default response
         return new Response("Ruta no encontrada. Intenta /cancion?name=TuNombre&birthday=AAAA-MM-DD", { status: 404 });

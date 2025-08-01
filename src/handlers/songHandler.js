@@ -29,16 +29,6 @@ export async function handlePostSongRequest(request, env) {
         });
     }
 
-    if (!isBirthday(birthDate)) {
-        return new Response(JSON.stringify({
-            isBirthday: false,
-            message: "Hoy no es tu cumpleaños."
-        }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }
-
     try {
         const age = calculateAge(birthDate);
         const songData = await generateSong(clientName, age, env.SUNO_API_KEY);
