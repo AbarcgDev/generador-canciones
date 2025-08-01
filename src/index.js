@@ -1,4 +1,4 @@
-import { handlePostSongRequest, handleSunoCallback } from "./handlers/songHandler";
+import { handleGetSongRequest, handlePostSongRequest, handleSunoCallback } from "./handlers/songHandler";
 import { handleGetTaskStatusRequest } from "./handlers/taskHandler";
 
 export default {
@@ -41,6 +41,16 @@ export default {
                 });
             }
             return await handleGetTaskStatusRequest(request, env)
+        }
+
+        if (pathname === "/descargar-cancion") {
+            if (request.method !== "GET") {
+                return new Response("Método no permitido", {
+                    status: 405, // Method Not Allowed
+                    headers: { "Allow": "GET" }
+                });
+            }
+            return await handleGetSongRequest(request, env)
         }
         // Default response
         return new Response("Ruta no encontrada. Intenta /cancion?name=TuNombre&birthday=AAAA-MM-DD", { status: 404 });
