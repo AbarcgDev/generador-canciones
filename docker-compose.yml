@@ -5,10 +5,13 @@ services:
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
     ports:
-      - "8787:8787"
-    command: sh -c "npm install && npx wrangler dev"
-
+      - "8787:8787" #Dev
+      - "8788:8788" #Admin
+    command: sh -c "npm install && npx wrangler d1 migrations apply SONGS_DB --local  < /dev/null&& npx wrangler dev"
     # Mantiene el contenedor corriendo de forma interactiva.
     stdin_open: true
     tty: true
