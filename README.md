@@ -1,65 +1,78 @@
-# Generacion de canciones de cumpleaños
----
-## ⚡ Endpoints de la API
+# Cancion Worker
 
-### `GET /cancion`
+> [!IMPORTANT]
+> Este proyecto requiere acceso a SunoAi y configuración previa de credenciales para funcionar correctamente. Consulta la documentación interna antes de desplegar en producción.
 
-Este endpoint responde con una cancion generada por IA (TODO) si recibe la fecha de cumpleaños de la persona.
+Servicio alojado en Cloudflare Workers que genera una cancion de cumpleaños utilizando SunoAi.
 
-#### Parámetros de Consulta (`Query Parameters`)
+## Tabla de Contenidos
+# Cancion Worker
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| :-------- | :--- | :------- | :---------- | :------ |
-| `name` | `string` | Sí | El nombre de la persona cuyo cumpleaños se está verificando. | `Robert` |
-| `birthday` | `string` | Sí | Si solo se envía `YYYY-MM-DD`, la API lo interpretará como medianoche UTC de ese día (`YYYY-MM-DDTH00:00:00.000Z`). | `1998-07-30` |
+Servicio alojado en Cloudflare Workers que genera una cancion de cumpleaños utilizando SunoAi.
 
-#### Ejemplo de Solicitud
+## Tabla de Contenidos
+
+- [Get Started](#get-started)
+- [Uso](#uso)
+- [Características](#características)
+- [Contribución](#contribución)
+- [Licencia](#licencia)
+- [Contacto](#contacto)
+
+## Get Started
 
 ```bash
-# Ejemplo usando curl
-curl "http://localhost:8787/cancion?name=Alvaro&birthday=1998-07-30"
+# Clona el repositorio
+git clone https://github.com/TuUsuario/cancion-worker.git
+cd cancion-worker
+```
+### Desarrollo
+Puedes instalar las dependencias y comenzar a desarrollar directamente con wrangler en tu
+maquina local
 
-# O simplemente en tu navegador
-http://localhost:8787/cancion?name=Robert&birthday=1998-07-30
+```bash
+# Instala dependencias 
+npm install
+# Inicia servidor de desarrollo
+npx wrangler dev
 ```
 
-#### Ejemplos de Respuesta
+La otra opcion es utilizar docker, con los servicios que ya vienen definidos dentro del repositorio
+en el archivo docker-compose.yml
 
-**1. Es Cumpleaños (hoy es 30 de julio de 2025)**
-
-```json
-{
-  "isBirthday": true,
-  "song": "Feliz Cumpleaños numero 27 Robert",
-}
+```bash
+# Inicia servidor de desarrollo
+docker-compose up dev
 ```
 
-2. No es Cumpleaños
 
-```json
-{
-  "isBirthday": false,
-  "message": "Hoy no es tu cumpleaños."
-}
-```
-3. Parámetros Faltantes
+## Uso
 
-```json
-{
-  "error": "Los parámetros 'name' y 'birthday' son obligatorios."
-}
+```bash
+# Inicia el servicio
+npm start
 ```
 
-4. Formato de Fecha Inválido
+El servicio expone endpoints REST para crear, consultar y actualizar información de canciones.
 
-```json
-{
-  "error": "Formato de fecha de nacimiento inválido. Esperado YYYY-MM-DD o YYYY-MM-DDTHH:MM:SS.sssZ."
-}
-```
-5. Método HTTP No Permitido
+## Características
 
-```
-Método no permitido
-(Con un estado HTTP 405 Method Not Allowed)
-```
+- API REST para gestión de canciones (crear, leer, actualizar, eliminar)
+- Validación de datos de entrada
+- Persistencia en base de datos (configurable)
+- Registro de logs de operaciones
+- Estructura modular y escalable
+
+## Contribución
+
+Las contribuciones son bienvenidas. Por favor, sigue las [guías de contribución](CONTRIBUTING.md).
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT.
+
+## Contacto
+
+- Autor: Álvaro Abarca Godoy
+- GitHub: [AlvaroAbarcaGodoy](https://github.com/AlvaroAbarcaGodoy)
+- Email: [alvaro.abarca.godoy@gmail.com](mailto:alvaro.abarca.godoy@gmail.com)
