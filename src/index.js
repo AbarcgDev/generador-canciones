@@ -13,7 +13,7 @@ export default {
             });
         }
 
-        if (pathname === "/cancion") {
+        if (pathname === "/api/generar-cancion") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
@@ -23,7 +23,7 @@ export default {
             return handlePostSongRequest(request, env);
         }
 
-        if (pathname === "/suno-callback") {
+        if (pathname === "/api/suno-callback") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
@@ -33,7 +33,7 @@ export default {
             return await handleSunoCallback(request, env)
         }
 
-        if (pathname === "/task-status") {
+        if (pathname === "/api/task-status") {
             if (request.method !== "GET") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
@@ -43,7 +43,7 @@ export default {
             return await handleGetTaskStatusRequest(request, env)
         }
 
-        if (pathname === "/descargar-cancion") {
+        if (pathname === "/api/descargar-cancion") {
             if (request.method !== "GET") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
