@@ -13,7 +13,7 @@ export default {
             });
         }
 
-        if (pathname === "/cancion") {
+        if (pathname === "/api/generar-cancion") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
