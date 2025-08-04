@@ -43,7 +43,7 @@ export default {
             return await handleGetTaskStatusRequest(request, env)
         }
 
-        if (pathname === "/descargar-cancion") {
+        if (pathname === "/api/descargar-cancion") {
             if (request.method !== "GET") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
