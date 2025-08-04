@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "Entorno de desarrollo para worker de cloudflare",
     "private": true,
-    "type": "module",
     "scripts": {
         "start": "npx wrangler dev",
         "deploy": "npx wrangler deploy",

@@ -1,5 +1,12 @@
 
 export async function generateSong(name, age, SUNO_API_KEY) {
+    return {
+        "code": 200,
+        "msg": "success",
+        "data": {
+            "taskId": "test-11"
+        }
+    }
     const url = 'https://api.sunoapi.org/api/v1/generate';
     const options = {
         method: 'POST',

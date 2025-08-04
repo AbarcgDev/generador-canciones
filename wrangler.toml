@@ -22,5 +22,6 @@ binding = "SONGS_STORAGE"
 [observability.logs]
 enabled = true
 
-[site]
-bucket = "./static"
+[assets]
+directory = "./static"
+binding = "ASSETS"
