@@ -47,45 +47,51 @@ document.addEventListener('DOMContentLoaded', () => {
         const interval = setInterval(async () => {
             try {
                 const response = await fetch(`/api/task-status?taskId=${taskId}`);
-                const result = await response.json();
+                const result = await response.json()
 
-                if (response.status === 200 && result.taskStatus === "SUCCESS") {
-                    clearInterval(interval);  // Detener polling
-
-                    // Actualizar la tarjeta con resultados
-                    const canciones = result.results.map(song => `
-                        <li>${song.title} (ID: ${song.id})</li>
-                    `).join('');
-                    const statusCard = document.createElement('div');
-                    statusCard.className = 'card'; // usa tu misma clase de estilo si quieres
-                    statusCard.innerHTML = `
-                        <div class="card">
-                            <h3>Tu canción está lista 🎵</h3>
-                            <ul>${canciones}</ul>
-                        </div>
-                    `;
+                if (response.status === 200 && result.taskStatus === 'SUCCESS') {
+                    clearInterval(interval);
                     statusContainer.innerHTML = '';
-                    statusContainer.appendChild(statusCard);
-                } else if (response.status === 202) {
-                    console.log("Esperando resultado...");
-                } else {
+                    const songs = result.results;
+                    const songsUI = await renderSongs(songs);
+                    statusContainer.appendChild(songsUI);
+                } else if (response.status !== 202) {
                     clearInterval(interval);
                     statusContainer.innerHTML = `
-                        <div class="card">
-                            <p>Ocurrió un error con tu solicitud.</p>
-                        </div>
-                    `;
+                    <div class="card">
+                        <p>Ocurrió un error con tu solicitud.</p>
+                    </div>`
                 }
-
-            } catch (error) {
+            } catch (err) {
                 clearInterval(interval);
                 statusContainer.innerHTML = `
-                    <div class="card">
-                        <p>Error al verificar el estado de la tarea.</p>
-                    </div>
-                `;
+                <div class="card">
+                    <p>Error verificando el estado de la tarea.</p>
+                </div>`;
             }
         }, 10000); // cada minuto
+    }
+
+    async function renderSongs(songs) {
+        const container = document.createElement('div');
+        for (const song of songs) {
+            const card = document.createElement('div');
+            card.className = 'song-card';
+
+            const title = document.createElement('h4');
+            title.textContent = song.title || song.id;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Descargar';
+            btn.onclick = () => {
+                // Llamada al Worker para descargar la canción
+                window.location = `/api/descargar-cancion?songId=${song.id}`;
+            };
+
+            card.append(title, btn);
+            container.appendChild(card);
+        }
+        return container;
     }
 });
 
