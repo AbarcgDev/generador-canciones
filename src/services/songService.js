@@ -8,13 +8,13 @@ export async function generateSong(name, age, SUNO_API_KEY) {
             prompt: `Una cancion alegre para desearle felicidades a ${name} en su cumpleaños numero ${age}
             de parte de FINSUS, su asesor finaciero. Que quiere recordarle que puede celebrar con gusto
             ya que gracias a su confianza y lealtad a los servicios que FINSUS le ofrece su patrimonio
-            se encuentra seguro y protegido`,
+            se encuentra seguro y protegido. Siempre debes mencionar que la felicitacion es de parte de FINSUS`,
             style: "Pop",
             title: `Cumpleaños de ${name}`,
             customMode: false,
-            instrumental: false, // Esto podría ser un problema si esperas voz
+            instrumental: false,
             model: "V3_5",
-            callBackUrl: ""
+            callBackUrl: "https://cancion-worker.bc-alvaro.workers.dev/suno-callback"
         })
     };
 
@@ -23,7 +23,7 @@ export async function generateSong(name, age, SUNO_API_KEY) {
         const data = await response.json();
 
         // *** IMPORTANTE: Verifica si la respuesta HTTP es exitosa ***
-        if (!data.code !== 200) {
+        if (data.code !== 200) {
             // Si la respuesta no es OK (por ejemplo, 400, 500), lanza un error con los detalles de la API
             const errorMsg = data.msg || JSON.stringify(data); // Usa el mensaje de la API o la respuesta completa
             throw new Error(`Error de la API de Suno (estado: ${data.code}): ${errorMsg}`);

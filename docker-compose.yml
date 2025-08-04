@@ -1,17 +1,35 @@
 services:
-  worker:
+  dev:
     image: node:22
     container_name: cancion-worker
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app
-    environment:
-      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
+    env_file:
+      - .env
     ports:
-      - "8787:8787" #Dev
-      - "8788:8788" #Admin
-    command: sh -c "npm install && npx wrangler d1 migrations apply SONGS_DB --local  < /dev/null&& npx wrangler dev"
-    # Mantiene el contenedor corriendo de forma interactiva.
+      - "8787:8787"
+    command: sh -c "npm install && npx wrangler d1 migrations apply SONGS_DB --local < /dev/null && npx wrangler dev"
     stdin_open: true
     tty: true
+
+  deployer:
+    image: node:22
+    container_name: cancion-deployer
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    command: sh deploy.sh
+
+  tester:
+    image: node:22
+    container_name: cancion-tester
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    # El comando para instalar y luego ejecutar las pruebas
+    command: sh -c "npm install && npm test"
