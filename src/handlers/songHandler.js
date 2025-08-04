@@ -12,7 +12,7 @@ export async function handlePostSongRequest(request, env) {
         });
     }
 
-    const { clientName, birthdateString } = requestData;
+    const { clientName, birthdate: birthdateString } = requestData;
 
     if (!clientName || !birthdateString) {
         return new Response(JSON.stringify({ error: "Los parámetros 'clientName' y 'birthdate' son obligatorios en el cuerpo de la petición." }), {
@@ -50,6 +50,7 @@ export async function handlePostSongRequest(request, env) {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
+        console.error(`Error generando cancion: ${error.message} taskId = ${songData.data.taskId}`)
         return new Response(JSON.stringify({
             msg: "Error generando cancion",
             error: error.message,
@@ -95,9 +96,6 @@ export async function handleSunoCallback(request, env) {
     const { task_id, callbackType, data: songs } = reqBody.data;
     if (code === 200 && callbackType === "complete") {
         try {// Marcar tarea como terminada
-            console.log(`Tarea ${task_id} completada, actualizando status en BD`)
-            const updateTaskQuery = env.SONGS_DB.prepare("UPDATE tasks SET status = ? WHERE id = ?")
-            const updateTaskResult = await updateTaskQuery.bind("SUCCESS", task_id).run()
             for (const song of songs) {
                 const { id, audio_url, title } = song;
                 const downloadFileResponse = await fetch(audio_url);
@@ -119,6 +117,9 @@ export async function handleSunoCallback(request, env) {
                 `);
                 const result = await query.bind(id, title, task_id).run();
                 console.log(`${result}`)
+                console.log(`Tarea ${task_id} completada, actualizando status en BD`)
+                const updateTaskQuery = env.SONGS_DB.prepare("UPDATE tasks SET status = ? WHERE id = ?")
+                const updateTaskResult = await updateTaskQuery.bind("SUCCESS", task_id).run()
             }
         } catch (error) {
             console.error(error.message);

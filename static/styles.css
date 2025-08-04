@@ -1,0 +1,126 @@
+/* Estilos generales para centrar el contenido */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    /* Color de fondo suave */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal para centrado */
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Estilo para la tarjeta del formulario */
+.card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Encabezado del formulario */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+/* Grupo de entrada de datos */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Etiquetas del formulario */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+/* Campos de entrada de texto y fecha */
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    box-sizing: border-box;
+    /* Asegura que el padding no desborde el ancho */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Estilo para el botón de enviar */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+.song-card {
+    border-radius: 8px;
+    padding: 16px;
+    background: #fefefe;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.song-card h4 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.song-card button {
+    margin-left: 16px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #0066ff;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.song-card button:hover {
+    background: #0050cc;
+}

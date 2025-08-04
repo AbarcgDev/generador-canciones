@@ -21,3 +21,7 @@ binding = "SONGS_STORAGE"
 
 [observability.logs]
 enabled = true
+
+[assets]
+directory = "./static"
+binding = "ASSETS"
