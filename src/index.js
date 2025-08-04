@@ -23,7 +23,7 @@ export default {
             return handlePostSongRequest(request, env);
         }
 
-        if (pathname === "/suno-callback") {
+        if (pathname === "/api/suno-callback") {
             if (request.method !== "POST") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
