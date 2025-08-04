@@ -33,7 +33,7 @@ export default {
             return await handleSunoCallback(request, env)
         }
 
-        if (pathname === "/task-status") {
+        if (pathname === "/api/task-status") {
             if (request.method !== "GET") {
                 return new Response("Método no permitido", {
                     status: 405, // Method Not Allowed
