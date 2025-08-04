@@ -14,7 +14,7 @@ export async function generateSong(name, age, SUNO_API_KEY) {
             customMode: false,
             instrumental: false,
             model: "V3_5",
-            callBackUrl: "https://cancion-worker.bc-alvaro.workers.dev/suno-callback"
+            callBackUrl: "https://cancion-worker.bc-alvaro.workers.dev/api/suno-callback"
         })
     };
 
