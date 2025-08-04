@@ -3,7 +3,6 @@
 # Salir inmediatamente si un comando falla
 set -e
 
-
 echo "Instalando dependencias..."
 npm install
 
