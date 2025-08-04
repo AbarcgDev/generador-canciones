@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # NO EJECUTAR MANUALMENTE, SE ENVIA AL SERVICIO DE DESPLIEGUE EN DOCKER
 # Salir inmediatamente si un comando falla
 set -e

@@ -12,7 +12,7 @@ export async function handlePostSongRequest(request, env) {
         });
     }
 
-    const { clientName, birthdateString } = requestData;
+    const { clientName, birthdate: birthdateString } = requestData;
 
     if (!clientName || !birthdateString) {
         return new Response(JSON.stringify({ error: "Los parámetros 'clientName' y 'birthdate' son obligatorios en el cuerpo de la petición." }), {
