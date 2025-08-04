@@ -1,13 +1,21 @@
-import { isBirthday, calculateAge } from "../services/birthdayService";
+import { calculateAge } from "../services/birthdayService";
 import { generateSong } from "../services/songService";
 
 export async function handlePostSongRequest(request, env) {
-    const url = new URL(request.url);
-    const clientName = url.searchParams.get("name");
-    const birthdayString = url.searchParams.get("birthday"); // Example: "1998-07-30"
+    let requestData;
+    try {
+        requestData = await request.json();
+    } catch (error) {
+        return new Response(JSON.stringify({ error: "Formato del cuerpo de la petición no es JSON válido." }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
 
-    if (!clientName || !birthdayString) {
-        return new Response(JSON.stringify({ error: "Los parámetros 'name' y 'birthday' son obligatorios." }), {
+    const { clientName, birthdateString } = requestData;
+
+    if (!clientName || !birthdateString) {
+        return new Response(JSON.stringify({ error: "Los parámetros 'clientName' y 'birthdate' son obligatorios en el cuerpo de la petición." }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' }
         });
@@ -16,7 +24,7 @@ export async function handlePostSongRequest(request, env) {
     let birthDate;
     try {
         // Forcing UTC format
-        birthDate = new Date(birthdayString + "T00:00:00.000Z");
+        birthDate = new Date(birthdateString + "T00:00:00.000Z");
 
         // Check for "Invalid Date"
         if (isNaN(birthDate.getTime())) {
@@ -31,13 +39,7 @@ export async function handlePostSongRequest(request, env) {
 
     try {
         const age = calculateAge(birthDate);
-        //const songData = await generateSong(clientName, age, env.SUNO_API_KEY);
-        const songData = {
-            status: 200,
-            data: {
-                taskId: "test"
-            }
-        }
+        const songData = await generateSong(clientName, age, env.SUNO_API_KEY);
         const insertTaskQuery = env.SONGS_DB.prepare("INSERT INTO tasks (id) VALUES (?)");
         const insertTaskResult = await insertTaskQuery.bind(songData.data.taskId).run();
         return new Response(JSON.stringify({
@@ -70,25 +72,32 @@ export async function handleGetSongRequest(request, env) {
             }), { status: 404 });
         }
 
+        const songResult = await env.SONGS_DB.prepare("SELECT title FROM songs WHERE id = ?").bind(songId).first();
+        const songTitle = songResult.title;
+
         const headers = new Headers();
         headers.set("Content-Type", "audio/mpeg");
-        headers.set("Content-Disposition", `attachment; filename="${songId}.mp3"`);
+        headers.set("Content-Disposition", `attachment; filename="${songTitle}.mp3"`);
 
         return new Response(songObject.body, { headers });
 
     } catch (error) {
+        console.error(
+            `Error al intertar devolver cancion id = ${songId}. msg = ${error.message}`
+        )
         return new Response(`Error al obtener la canción: ${error.message}`, { status: 500 });
     }
 }
 
 export async function handleSunoCallback(request, env) {
     const reqBody = await request.json();
-    const { code, task_id } = reqBody;
-    if (code === 200) {
+    const { code } = reqBody;
+    const { task_id, callbackType, data: songs } = reqBody.data;
+    if (code === 200 && callbackType === "complete") {
         try {// Marcar tarea como terminada
+            console.log(`Tarea ${task_id} completada, actualizando status en BD`)
             const updateTaskQuery = env.SONGS_DB.prepare("UPDATE tasks SET status = ? WHERE id = ?")
             const updateTaskResult = await updateTaskQuery.bind("SUCCESS", task_id).run()
-            const songs = reqBody.data;
             for (const song of songs) {
                 const { id, audio_url, title } = song;
                 const downloadFileResponse = await fetch(audio_url);
@@ -101,8 +110,15 @@ export async function handleSunoCallback(request, env) {
                 const songFile = await downloadFileResponse.arrayBuffer();
                 // Guarda la cancion usando la id proprocionada por suno como key.
                 await env.SONGS_STORAGE.put(id, songFile)
-                const query = env.SONGS_DB.prepare("INSERT INTO songs (id,title,task_id) VALUES (?, ?, ?)");
+                console.log(`Insertando cancion ${id} en BD`)
+                const query = env.SONGS_DB.prepare(`
+                    INSERT INTO songs (id, title, task_id) VALUES (?, ?, ?)
+                    ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    task_id = excluded.task_id;
+                `);
                 const result = await query.bind(id, title, task_id).run();
+                console.log(`${result}`)
             }
         } catch (error) {
             console.error(error.message);
