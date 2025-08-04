@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>Error verificando el estado de la tarea.</p>
                 </div>`;
             }
-        }, 10000); // cada minuto
+        }, 60000); // cada 60s
     }
 
     async function renderSongs(songs) {
