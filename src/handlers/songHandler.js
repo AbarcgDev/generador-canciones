@@ -92,6 +92,20 @@ export async function handleGetSongRequest(request, env) {
     }
 }
 
+export async function handleGetAllSongsRequest(request, env) {
+    try {
+        const query = env.SONGS_DB.prepare("SELECT id, title FROM songs");
+        const { results } = await query.all();
+        if (!results) {
+            return new Response(JSON.stringify({ msg: "No hay canciones disponibles." }), { status: 404 });
+        }
+        return new Response(JSON.stringify(results), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {
+        console.error(`Error al obtener canciones: ${error.message}`);
+        return new Response(JSON.stringify({ error: "Error al obtener las canciones." }), { status: 500 });
+    }
+}
+
 export async function handleSunoCallback(request, env) {
     const reqBody = await request.json();
     const { code } = reqBody;
