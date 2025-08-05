@@ -1,4 +1,4 @@
-name = "cancion-worker"
+name = "generador-canciones-test"
 main = "src/index.js"
 compatibility_date = "2024-07-25"
 
