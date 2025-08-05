@@ -80,7 +80,7 @@ export async function handleGetSongRequest(request, env) {
 
         const headers = new Headers();
         headers.set("Content-Type", "audio/mpeg");
-        headers.set("Content-Disposition", `attachment; filename="${songTitle}.mp3"`);
+        headers.set("Content-Disposition", `inline; filename="${songTitle}.mp3"`);
 
         return new Response(songObject.body, { headers });
 
