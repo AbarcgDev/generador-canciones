@@ -1,4 +1,5 @@
 import { calculateAge } from "../services/birthdayService";
+import { generateMusicStyle } from "../services/musicStyleService";
 import { generateSong } from "../services/songService";
 
 export async function handlePostSongRequest(request, env) {
@@ -12,7 +13,7 @@ export async function handlePostSongRequest(request, env) {
         });
     }
 
-    const { clientName, birthdate: birthdateString } = requestData;
+    const { clientName, birthdate: birthdateString, style, singerGenre } = requestData;
 
     if (!clientName || !birthdateString) {
         return new Response(JSON.stringify({ error: "Los parámetros 'clientName' y 'birthdate' son obligatorios en el cuerpo de la petición." }), {
@@ -39,7 +40,9 @@ export async function handlePostSongRequest(request, env) {
 
     try {
         const age = calculateAge(birthDate);
-        const songData = await generateSong(clientName, age, env.SUNO_API_KEY);
+        const musicStyle = await generateMusicStyle(style || "Pop", env);
+        const singer = singerGenre || "femenina";
+        const songData = await generateSong(clientName, age, musicStyle, singer, env.SUNO_API_KEY);
         const insertTaskQuery = env.SONGS_DB.prepare("INSERT INTO tasks (id) VALUES (?)");
         const insertTaskResult = await insertTaskQuery.bind(songData.data.taskId).run();
         return new Response(JSON.stringify({
@@ -53,7 +56,6 @@ export async function handlePostSongRequest(request, env) {
         console.error(`Error generando cancion: ${error.message} taskId = ${songData.data.taskId}`)
         return new Response(JSON.stringify({
             msg: "Error generando cancion",
-            error: error.message,
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

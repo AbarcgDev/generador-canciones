@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {
             clientName: form.nombre.value,
             birthdate: form.fecha.value,
+            style: form.style.value,
+            singerGenre: form['singer-genre'].value,
         };
 
         try {

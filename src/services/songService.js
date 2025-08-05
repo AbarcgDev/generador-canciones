@@ -1,14 +1,13 @@
 
-export async function generateSong(name, age, SUNO_API_KEY) {
+export async function generateSong(name, age, musicStyle, singerGenre, SUNO_API_KEY) {
     const url = 'https://api.sunoapi.org/api/v1/generate';
     const options = {
         method: 'POST',
         headers: { Authorization: `Bearer ${SUNO_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            prompt: `Una cancion alegre para desearle felicidades a ${name} en su cumpleaños numero ${age}
-            de parte de FINSUS, su asesor finaciero. Que quiere recordarle que puede celebrar con gusto
-            ya que gracias a su confianza y lealtad a los servicios que FINSUS le ofrece su patrimonio
-            se encuentra seguro y protegido. Siempre debes mencionar que la felicitacion es de parte de FINSUS`,
+            prompt: `Una cancion para desearle felicidades a ${name} en su cumpleaños numero ${age}
+            de parte de FINSUS, su asesor finaciero. Que quiere recordarle que puede celebrar con gusto pues
+            con el su patrimonio está seguro.Cantada por una voz ${singerGenre}. Estilo: ${musicStyle}`,
             style: "Pop",
             title: `Cumpleaños de ${name}`,
             customMode: false,

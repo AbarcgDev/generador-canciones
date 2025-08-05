@@ -25,3 +25,6 @@ enabled = true
 [assets]
 directory = "./static"
 binding = "ASSETS"
+
+[ai]
+binding = "AI"
