@@ -217,7 +217,7 @@ Perfecto, ya con este tercer controlador (`GET /songs/download?songId={id}`), aq
 
 ---
 
-### ⬇️ GET `/songs/download?songId={id}`
+### ⬇️ GET `/api/descargar-cancion?songId={id}`
 
 Descarga el archivo de audio MP3 correspondiente a una canción previamente generada.
 
@@ -226,7 +226,7 @@ Descarga el archivo de audio MP3 correspondiente a una canción previamente gene
 #### 📥 Solicitud
 
 **Método:** `GET`
-**Ruta:** `/songs/download`
+**Ruta:** `/api/descargar-cancion`
 **Parámetros de consulta:**
 
 | Parámetro | Tipo     | Requerido | Descripción                  |
@@ -284,6 +284,6 @@ Este endpoint **no requiere autenticación**, pero accede a almacenamiento priva
 
 ### 📦 Flujo sugerido de uso completo de la API
 
-1. `POST /songs` → Crea la tarea (devuelve `taskId`)
-2. `GET /songs/status?taskId=...` → Esperar estado `SUCCESS`
-3. `GET /songs/download?songId=...` → Descargar archivo `.mp3`
+1. `POST /api/generar-cancion` → Crea la tarea (devuelve `taskId`)
+2. `GET /api/task-status?taskId=...` → Esperar estado `SUCCESS`
+3. `GET /api/descargar-cancion?songId=...` → Descargar archivo `.mp3`
