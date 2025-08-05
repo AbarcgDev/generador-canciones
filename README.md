@@ -282,4 +282,8 @@ Este endpoint **no requiere autenticación**, pero accede a almacenamiento priva
 
 1. `POST /api/generar-cancion` → Crea la tarea (devuelve `taskId`)
 2. `GET /api/task-status?taskId=...` → Esperar estado `SUCCESS`
+<<<<<<< HEAD
 3. `GET /api/descargar-cancion?songId=...` → Descargar archivo `.mp3`
+=======
+3. `GET /api/descargar-cancion?songId=...` → Descargar archivo `.mp3`
+>>>>>>> release/1.2.0

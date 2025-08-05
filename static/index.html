@@ -9,7 +9,16 @@
 </head>
 
 <body>
+    <header>
+        <div class="logo">
+            <img src="images/logo-finsus.png" alt="FINSUS Logo">
+        </div>
+        <button id="toggle-historial" class="toggle-btn">Ver historial de canciones</button>
+    </header>
     <div class="container">
+        <h1>Generador de canciones de cumpleaños</h1>
+        <p>Genera una cancion de cumpleaños personalizada para los clientes con dedicatoria de FINSUS
+        </p>
         <form class="card">
             <h2>Ingresa tus datos</h2>
             <div class="input-group">
@@ -20,10 +29,48 @@
                 <label for="fecha">Fecha de nacimiento:</label>
                 <input type="date" id="fecha" name="fecha" required>
             </div>
+            <div class="input-group">
+                <label for="style">Artista Favorito:</label>
+                <select id="style" name="style" required>
+                    <option value="Luis Miguel">Luis Miguel</option>
+                    <option value="Shakira">Shakira</option>
+                    <option value="Juanes">Juanes</option>
+                    <option value="Carlos Vives">Carlos Vives</option>
+                    <option value="Marc Anthony">Marc Anthony</option>
+                    <option value="Alejandro Sanz">Alejandro Sanz</option>
+                    <option value="Rosalía">Rosalía</option>
+                    <option value="Bad Bunny">Bad Bunny</option>
+                    <option value="J Balvin">J Balvin</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="singer-genre">Genero del cantante:</label>
+                <select type="text" id="singer-genre" name="singer" required>
+                    <option value="femenina">Femenina</option>
+                    <option value="masculina">Masculina</option>
+                </select>
+            </div>
             <button type="submit">Enviar</button>
         </form>
     </div>
     <div id="status-container"></div>
+
+    <!-- Panel lateral oculto -->
+    <aside id="historial-panel" class="historial-sidebar hidden">
+        <div class="historial-header">
+            <h3>Historial de canciones</h3>
+            <button id="cerrar-historial">✖</button>
+        </div>
+        <div id="historico-canciones">
+            <p>Cargando canciones...</p>
+        </div>
+    </aside>
+    <footer>
+        <div class="footer-logo">
+            <img src="images/logo-finsus.png" alt="FINSUS Logo">
+        </div>
+        <p>&copy; 2025 FINSUS. Todos los derechos reservados.</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 
