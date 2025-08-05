@@ -9,10 +9,6 @@ Servicio alojado en Cloudflare Workers que genera una cancion de cumpleaños uti
 
 - [Get Started](#get-started)
 - [Uso](#uso)
-- [Características](#características)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
-- [Contacto](#contacto)
 
 # Get Started
 
