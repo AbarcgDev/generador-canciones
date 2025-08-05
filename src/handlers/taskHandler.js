@@ -4,7 +4,7 @@ export async function handleGetTaskStatusRequest(request, env) {
     const getTaskStatusQuery = env.SONGS_DB.prepare("SELECT status FROM tasks WHERE id = ?");
     const taskStatus = await getTaskStatusQuery.bind(taskId).first();
     if (!taskStatus) {
-        return Response(JSON.stringify({
+        return new Response(JSON.stringify({
             msg: `$Solicitud {task_id} no encontrada`
         }), {
             status: 404,

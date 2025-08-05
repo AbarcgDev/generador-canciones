@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {
             clientName: form.nombre.value,
             birthdate: form.fecha.value,
+            style: form.style.value,
+            singerGenre: form['singer-genre'].value,
         };
 
         try {
@@ -93,6 +95,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return container;
     }
+
+    // Mostrar y ocultar el panel de historial
+    const btnToggleHistorial = document.getElementById("toggle-historial");
+    const panelHistorial = document.getElementById("historial-panel");
+    const btnCerrar = document.getElementById("cerrar-historial");
+
+    btnToggleHistorial.addEventListener("click", () => {
+        panelHistorial.classList.remove("hidden");
+        panelHistorial.classList.add("visible");
+
+        // Si aún no se ha cargado, haz fetch
+        const contenedor = document.getElementById('historico-canciones');
+        if (!contenedor.dataset.cargado) {
+            fetch('/api/canciones')
+                .then(res => res.json())
+                .then(canciones => {
+                    contenedor.innerHTML = "";
+                    canciones.forEach(c => {
+                        const div = document.createElement("div");
+                        div.className = "mini-song-card";
+
+                        const title = document.createElement("p");
+                        title.innerHTML = `<strong>${c.title}</strong>`;
+
+                        const btn = document.createElement('button');
+                        btn.textContent = 'Descargar';
+                        btn.className = 'mini-download-btn';
+                        btn.onclick = () => {
+                            window.location = `/api/descargar-cancion?songId=${c.id}`;
+                        };
+
+                        div.appendChild(title);
+                        div.appendChild(btn);
+                        contenedor.appendChild(div);
+                    });
+                    contenedor.dataset.cargado = "true";
+                })
+                .catch(err => {
+                    contenedor.innerHTML = `<p>Error al cargar canciones.</p>`;
+                });
+        }
+    });
+
+    btnCerrar.addEventListener("click", () => {
+        panelHistorial.classList.remove("visible");
+        panelHistorial.classList.add("hidden");
+    });
+
 });
 
 
